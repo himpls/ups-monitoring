@@ -1,0 +1,1466 @@
+
+PS-MIB DEFINITIONS ::= BEGIN
+
+IMPORTS
+	OBJECT-TYPE, MODULE-IDENTITY, enterprises,
+	Gauge32, TimeTicks, Integer32
+		FROM SNMPv2-SMI
+	TimeStamp
+		FROM SNMPv2-TC;
+
+-- value returned for sysObjectID
+
+psDev MODULE-IDENTITY
+	LAST-UPDATED "201508271316Z"
+	ORGANIZATION
+		"NPF Multiobrabotka LLC"
+	CONTACT-INFO
+		"insec@multio.ru"
+	DESCRIPTION
+		"The MIB definitions for PS"
+::= { multiobrabotka 2 }
+
+multiobrabotka       OBJECT IDENTIFIER ::= { enterprises 46056 }
+
+
+PsEntry   OBJECT IDENTIFIER ::= { multiobrabotka 2 }
+
+
+psState  OBJECT-TYPE
+	SYNTAX     INTEGER {
+		notWork (0),
+		working (1)
+	}
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of the UPS."
+	::= { PsEntry 1 }
+
+psError1 OBJECT-TYPE
+	SYNTAX     INTEGER {
+		notError (0),
+		overheat (1),
+		lowOutVolt(2),
+		overheatANDLowOutVolt(3),
+		hightOutVolt(4),
+		overheatANDhightOutVolt(5),
+		lowBaseVoltage(8),
+		hightBaseVoltage(16),
+		lowInputVoltage(32),
+		hightInputVoltage(64),
+		lowBattVolt(256),
+		hightBattVolt(512),
+		overload(1024),
+		KZ(2048),
+		lostConnection(4096),
+		outVoltDetect(8192)
+	}
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Error codes, part 1."
+	::= { PsEntry 2 }
+psError2 OBJECT-TYPE
+	SYNTAX     INTEGER {
+		noError(0),
+		tempSencorError(1),
+		errorCAN(2),
+		tempSencorErrorANDerrorCAN(3),
+		lowBypassVolt(4),
+		tempSencorErrorANDlowBypassVolt(5),
+		lowBypassVoltANDerrorCAN(6),
+		lowBypassVoltANDtempSencorErrorANDerrorCAN(7),
+		hightBypassVolt(8),
+		tempSencorError2(16),
+		errorBatt(32)
+	}
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Error codes, part 2."
+	::= { PsEntry 3 }
+
+psError3 OBJECT-TYPE
+	SYNTAX     INTEGER {
+		noError(0)
+	}
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Error codes, part 3."
+	::= { PsEntry 4 }
+
+psError4 OBJECT-TYPE
+	SYNTAX     INTEGER {
+		noError(0)
+	}
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Error codes, part 4."
+	::= { PsEntry 5 }
+
+psVoltInput OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Input voltage value in volts multiplied by 10(without calibration in ADC units)."
+	::= { PsEntry 6 }
+
+psBattaryVoltageInput OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Battery input voltage value in volts multiplied by 10(without calibration in ADC units)"
+	::= { PsEntry 7 }
+
+psVoltageOutput OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Output voltage value in volts multiplied by 10(without calibration in ADC units)"
+	::= { PsEntry 8 }
+
+psInputFreg OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Input frequency value in hertz multiplied by 10"
+	::= { PsEntry 9 }
+
+psCurrentOutput OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Input current value in amperes multiplied by 10 (without calibration in ADC units)"
+	::= { PsEntry 10 }
+
+psTempInside OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Radiator temperature in degrees Celsius"
+	::= { PsEntry 11 }
+
+psPowerLoad OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Load power"
+	::= { PsEntry 12 }
+
+psReleState OBJECT-TYPE
+	SYNTAX     INTEGER {
+		off (0),
+		onOpto(1),
+		onRele1(4),
+		onOptoAndRele1(5),
+		onRele2(8),
+		onOptoAndRele2(9),
+		onAll(13)
+	}
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Relay and optocoupler status"
+	::= { PsEntry 13 }
+
+psFanState OBJECT-TYPE
+	SYNTAX     INTEGER {
+		off (0),
+		on(1)
+	}
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Fan state"
+	::= { PsEntry 14 }
+
+psBattaryModuleState OBJECT-TYPE
+	SYNTAX     INTEGER {
+		off (0),
+		on (1),
+		error(10),
+		errorBatt(11)
+	}
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Battery Module Status"
+	::= { PsEntry 15 }
+
+psNominalPower OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Rated power"
+	::= { PsEntry 16 }
+
+psNominalCurrent OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Rated output current in amperes multiplied by 100"
+	::= { PsEntry 17 }
+
+psNominalBattaryVolt OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Rated battary in volts"
+	::= { PsEntry 18 }
+
+psSerialNumber OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Serial number"
+	::= { PsEntry 19 }
+
+psFirmwareVersionH OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Number of major version of the PS firmware"
+	::= { PsEntry 20 }
+
+psFirmwareVersionL OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Number of minor version of the PS firmware"
+	::= { PsEntry 21 }
+
+psChargeBatt OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Current battery charge in percentage"
+	::= { PsEntry 22 }
+
+psDeviceType OBJECT-TYPE
+	SYNTAX     INTEGER {
+		unknown(0),
+		PS_1000_220_220 (1),
+		PS_1000_220_220_E (2),
+		PS_1000_220_220_C_E (3),
+		PS_1500_220_220 (4),
+		PS_1500_220_220_E (5),
+		PS_1500_220_220_C_E (6),
+		PS_3000_220_220 (7),
+		PS_3000_220_220_E (8),
+		PS_3000_220_220_C_E (9),
+		PS_3000_220_220_S (10),
+		PS_3000_220_220_E_S(11),
+		PS_6000_220_220 (12),
+		PS_6000_220_220_E (13),
+		PS_6000_220_220_C_E (14),
+		PS_6000_220_220_S (15),
+		PS_6000_220_220_E_S(16),
+		PS_200_220_48 (17),
+		PS_200_220_48_E (18),
+		PS_200_220_48_C_E (19),
+		PS_400_220_48 (20),
+		PS_400_220_48_E (21),
+		PS_400_220_48_C_E (22),
+		PS_600_220_48 (23),
+		PS_600_220_48_E (24),
+		PS_600_220_48_C_E (25),
+		PS_800_220_48 (26),
+		PS_800_220_48_E (27),
+		PS_800_220_48_C_E (28),
+		PS_1200_220_48 (29),
+		PS_1200_220_48_E (30),
+		PS_1200_220_48_C_E (31),
+		PS_2400_220_48 (32),
+		PS_2400_220_48_E (33),
+		PS_2400_220_48_C_E (33)
+	}
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Device type"
+	::= { PsEntry 23 }
+
+psBattaryCurrentInput OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Battery current in amperes multiplied by 10 (without calibration in ADC units)"
+	::= { PsEntry 24 }
+psTempsensorKKM1 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Temperature radiator 1 in celcius"
+	::= { PsEntry 25 }
+psTempsensorKKM2 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Temperature radiator 2 in celcius"
+	::= { PsEntry 26 }
+psBattaryModule1State OBJECT-TYPE
+	SYNTAX     INTEGER {
+		off (0),
+		on (1),
+		error(10),
+		errorBatt(11)
+	}
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Battery Module 1 Status"
+	::= { PsEntry 27 }
+psTempsensorBatt1Radiator OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Temperature radiator battary 1 in celcius"
+	::= { PsEntry 28 }
+psTempsensorBatt1Cell1 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Temperature battary 1 cell 1 in celcius"
+	::= { PsEntry 29 }
+psTempsensorBatt1Cell2 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Temperature battary 1 cell 2 in celcius"
+	::= { PsEntry 30 }
+psTempsensorBatt1Cell3 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Temperature battary 1 cell 3 in celcius"
+	::= { PsEntry 31 }
+psTempsensorBatt1Cell4 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Temperature battary 1 cell 4 in celcius"
+	::= { PsEntry 32 }
+psTempsensorBatt1Cell5 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Temperature battary 1 cell 5 in celcius"
+	::= { PsEntry 33 }
+psTempsensorBatt1Cell6 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Temperature battary 1 cell 6 in celcius"
+	::= { PsEntry 34 }
+psTempsensorBatt1Cell7 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Temperature battary 1 cell 7 in celcius"
+	::= { PsEntry 35 }
+psTempsensorBatt1Cell8 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Temperature battary 1 cell 8 in celcius"
+	::= { PsEntry 36 }
+psVoltageBatt1All OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Charge out voltage battary 1 "
+	::= { PsEntry 37 }
+psVoltageBatt1Cell1 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Cell 1 voltage battary 1  multiplied by 10"
+	::= { PsEntry 38 }
+psVoltageBatt1Cell2 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Cell 2 voltage battary 1 multiplied by 10"
+	::= { PsEntry 39 }
+psVoltageBatt1Cell3 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Cell 3 voltage battary 1  multiplied by 10"
+	::= { PsEntry 40 }
+psVoltageBatt1Cell4 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Cell 4 voltage battary 1  multiplied by 10"
+	::= { PsEntry 41 }
+psVoltageBatt1Cell5 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Cell 5 voltage battary 1 multiplied by 10"
+	::= { PsEntry 42 }
+psVoltageBatt1Cell6 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Cell 6 voltage battary 1 multiplied by 10"
+	::= { PsEntry 43 }
+psVoltageBatt1Cell7 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Cell 7 voltage battary 1 multiplied by 10"
+	::= { PsEntry 44 }
+psVoltageBatt1Cell8 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Cell 8 voltage battary 1 multiplied by 10"
+	::= { PsEntry 45 }
+psChargeAmpBattary1 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Charge current in amperes battary 1  multiplied by 10 "
+	::= { PsEntry 46  }
+psTimeOnBattary1 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Time on battary in minutes "
+	::= { PsEntry 47  }
+psbattary1health1 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 1 battary 1  "
+	::= { PsEntry 48  }
+psbattary1health2 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 2 battary 1 "
+	::= { PsEntry 49  }
+psbattary1health3 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 3 battary 1 "
+	::= { PsEntry 50  }
+psbattary1health4 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 4 battary 1 "
+	::= { PsEntry 51  }
+psbattary1health5 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 5 battary 1 "
+	::= { PsEntry 52  }
+psbattary1health6 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 6 battary 1 "
+	::= { PsEntry 53  }
+psbattary1health7 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 7 battary 1 "
+	::= { PsEntry 54  }
+psbattary1health8 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 8 battary 1 "
+	::= { PsEntry 55  }
+psbattary1charge1 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 1 battary 1 "
+	::= { PsEntry 56  }
+psbattary1charge2 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 2 battary 1 "
+	::= { PsEntry 57  }
+psbattary1charge3 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 3 battary 1 "
+	::= { PsEntry 58  }
+psbattary1charge4 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 4 battary 1 "
+	::= { PsEntry 59  }
+psbattary1charge5 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 5 battary 1 "
+	::= { PsEntry 60  }
+psbattary1charge6 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 6 battary 1 "
+	::= { PsEntry 61 }
+psbattary1charge7 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 7 battary 1 "
+	::= { PsEntry 62 }
+psbattary1charge8 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 8 battary 1 "
+	::= { PsEntry 63 }
+psBattaryModule2State OBJECT-TYPE
+	SYNTAX     INTEGER {
+		off (0),
+		on (1),
+		error(10),
+		errorBatt(11)
+	}
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Battery Module 2 Status"
+	::= { PsEntry 64 }
+psTempsensorBatt2Radiator OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Temperature radiator battary 2 in celcius"
+	::= { PsEntry 65 }
+psTempsensorBatt2Cell1 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Temperature battary 2 cell 1 in celcius"
+	::= { PsEntry 66 }
+psTempsensorBatt2Cell2 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Temperature battary 2 cell 2 in celcius"
+	::= { PsEntry 67 }
+psTempsensorBatt2Cell3 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Temperature battary 2 cell 3 in celcius"
+	::= { PsEntry 68 }
+psTempsensorBatt2Cell4 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Temperature battary 2 cell 4 in celcius"
+	::= { PsEntry 69 }
+psTempsensorBatt2Cell5 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Temperature battary 2 cell 5 in celcius"
+	::= { PsEntry 70 }
+psTempsensorBatt2Cell6 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Temperature battary 2 cell 6 in celcius"
+	::= { PsEntry 71 }
+psTempsensorBatt2Cell7 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Temperature battary 2 cell 7 in celcius"
+	::= { PsEntry 72 }
+psTempsensorBatt2Cell8 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Temperature battary 2 cell 8 in celcius"
+	::= { PsEntry 73 }
+psVoltageBatt2All OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Charge out voltage battary 2 "
+	::= { PsEntry 74 }
+psVoltageBatt2Cell1 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Cell 1 voltage battary 2  multiplied by 10"
+	::= { PsEntry 75 }
+psVoltageBatt2Cell2 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Cell 2 voltage battary 2 multiplied by 10"
+	::= { PsEntry 76 }
+psVoltageBatt2Cell3 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Cell 3 voltage battary 2  multiplied by 10"
+	::= { PsEntry 77 }
+psVoltageBatt2Cell4 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Cell 4 voltage battary 2  multiplied by 10"
+	::= { PsEntry 78 }
+psVoltageBatt2Cell5 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Cell 5 voltage battary 2 multiplied by 10"
+	::= { PsEntry 79 }
+psVoltageBatt2Cell6 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Cell 6 voltage battary 2 multiplied by 10"
+	::= { PsEntry 80 }
+psVoltageBatt2Cell7 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Cell 7 voltage battary 2 multiplied by 10"
+	::= { PsEntry 81 }
+psVoltageBatt2Cell8 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Cell 8 voltage battary 2 multiplied by 10"
+	::= { PsEntry 82 }
+psChargeAmpBattary2 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Charge current in amperes battary 2  multiplied by 10 "
+	::= { PsEntry 83  }
+psTimeOnBattary2 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Time on battary in minutes "
+	::= { PsEntry 84  }
+psbattary2health1 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 1 battary 2  "
+	::= { PsEntry 85  }
+psbattary2health2 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 2 battary 2 "
+	::= { PsEntry 86  }
+psbattary2health3 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 3 battary 2 "
+	::= { PsEntry 87  }
+psbattary2health4 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 4 battary 2 "
+	::= { PsEntry 88  }
+psbattary2health5 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 5 battary 2 "
+	::= { PsEntry 89  }
+psbattary2health6 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 6 battary 2 "
+	::= { PsEntry 90  }
+psbattary2health7 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 7 battary 2 "
+	::= { PsEntry 91  }
+psbattary2health8 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 8 battary 2 "
+	::= { PsEntry 92  }
+psbattary2charge1 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 1 battary 2 "
+	::= { PsEntry 93  }
+psbattary2charge2 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 2 battary 2 "
+	::= { PsEntry 94  }
+psbattary2charge3 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 3 battary 2 "
+	::= { PsEntry 95  }
+psbattary2charge4 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 4 battary 2 "
+	::= { PsEntry 96  }
+psbattary2charge5 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 5 battary 2 "
+	::= { PsEntry 97  }
+psbattary2charge6 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 6 battary 2 "
+	::= { PsEntry 98 }
+psbattary2charge7 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 7 battary 2 "
+	::= { PsEntry 99 }
+psbattary2charge8 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 8 battary 2 "
+	::= { PsEntry 100 }
+psBattaryModule3State OBJECT-TYPE
+	SYNTAX     INTEGER {
+		off (0),
+		on (1),
+		error(10),
+		errorBatt(11)
+	}
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Battery Module 3 Status"
+	::= { PsEntry 101 }
+psTempsensorBatt3Radiator OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Temperature radiator battary 3 in celcius"
+	::= { PsEntry 102 }
+psTempsensorBatt3Cell1 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Temperature battary 3 cell 1 in celcius"
+	::= { PsEntry 103 }
+psTempsensorBatt3Cell2 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Temperature battary 3 cell 2 in celcius"
+	::= { PsEntry 104 }
+psTempsensorBatt3Cell3 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Temperature battary 3 cell 3 in celcius"
+	::= { PsEntry 105 }
+psTempsensorBatt3Cell4 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Temperature battary 3 cell 4 in celcius"
+	::= { PsEntry 106 }
+psTempsensorBatt3Cell5 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Temperature battary 3 cell 5 in celcius"
+	::= { PsEntry 107 }
+psTempsensorBatt3Cell6 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Temperature battary 3 cell 6 in celcius"
+	::= { PsEntry 108 }
+psTempsensorBatt3Cell7 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Temperature battary 3 cell 7 in celcius"
+	::= { PsEntry 109 }
+psTempsensorBatt3Cell8 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Temperature battary 3 cell 8 in celcius"
+	::= { PsEntry 110 }
+psVoltageBatt3All OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Charge out voltage battary 3 "
+	::= { PsEntry 111 }
+psVoltageBatt3Cell1 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Cell 1 voltage battary 3  multiplied by 10"
+	::= { PsEntry 112 }
+psVoltageBatt3Cell2 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Cell 2 voltage battary 3 multiplied by 10"
+	::= { PsEntry 113 }
+psVoltageBatt3Cell3 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Cell 3 voltage battary 3  multiplied by 10"
+	::= { PsEntry 114 }
+psVoltageBatt3Cell4 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Cell 4 voltage battary 3  multiplied by 10"
+	::= { PsEntry 115 }
+psVoltageBatt3Cell5 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Cell 5 voltage battary 3 multiplied by 10"
+	::= { PsEntry 116 }
+psVoltageBatt3Cell6 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Cell 6 voltage battary 3 multiplied by 10"
+	::= { PsEntry 117 }
+psVoltageBatt3Cell7 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Cell 7 voltage battary 3 multiplied by 10"
+	::= { PsEntry 118 }
+psVoltageBatt3Cell8 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Cell 8 voltage battary 3 multiplied by 10"
+	::= { PsEntry 119 }
+psChargeAmpBattary3 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Charge current in amperes battary 3  multiplied by 10 "
+	::= { PsEntry 120  }
+psTimeOnBattary3 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Time on battary in minutes "
+	::= { PsEntry 121  }
+psbattary3health1 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 1 battary 3  "
+	::= { PsEntry 122  }
+psbattary3health2 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 2 battary 3 "
+	::= { PsEntry 123  }
+psbattary3health3 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 3 battary 3 "
+	::= { PsEntry 124  }
+psbattary3health4 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 4 battary 3 "
+	::= { PsEntry 125  }
+psbattary3health5 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 5 battary 3 "
+	::= { PsEntry 126  }
+psbattary3health6 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 6 battary 3 "
+	::= { PsEntry 127  }
+psbattary3health7 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 7 battary 3 "
+	::= { PsEntry 128  }
+psbattary3health8 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 8 battary 3 "
+	::= { PsEntry 129  }
+psbattary3charge1 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 1 battary 3 "
+	::= { PsEntry 130  }
+psbattary3charge2 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 2 battary 3 "
+	::= { PsEntry 131  }
+psbattary3charge3 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 3 battary 3 "
+	::= { PsEntry 132  }
+psbattary3charge4 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 4 battary 3 "
+	::= { PsEntry 133  }
+psbattary3charge5 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 5 battary 3 "
+	::= { PsEntry 134  }
+psbattary3charge6 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 6 battary 3 "
+	::= { PsEntry 135 }
+psbattary3charge7 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 7 battary 3 "
+	::= { PsEntry 136 }
+psbattary3charge8 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 8 battary 3 "
+	::= { PsEntry 137 }
+psBattaryModule4State OBJECT-TYPE
+	SYNTAX     INTEGER {
+		off (0),
+		on (1),
+		error(10),
+		errorBatt(11)
+	}
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Battery Module 4 Status"
+	::= { PsEntry 138 }
+psTempsensorBatt4Radiator OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Temperature radiator battary 4 in celcius"
+	::= { PsEntry 139 }
+psTempsensorBatt4Cell1 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Temperature battary 4 cell 1 in celcius"
+	::= { PsEntry 140 }
+psTempsensorBatt4Cell2 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Temperature battary 4 cell 2 in celcius"
+	::= { PsEntry 141 }
+psTempsensorBatt4Cell3 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Temperature battary 4 cell 3 in celcius"
+	::= { PsEntry 142 }
+psTempsensorBatt4Cell4 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Temperature battary 4 cell 4 in celcius"
+	::= { PsEntry 143 }
+psTempsensorBatt4Cell5 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Temperature battary 4 cell 5 in celcius"
+	::= { PsEntry 144 }
+psTempsensorBatt4Cell6 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Temperature battary 4 cell 6 in celcius"
+	::= { PsEntry 145 }
+psTempsensorBatt4Cell7 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Temperature battary 4 cell 7 in celcius"
+	::= { PsEntry 146 }
+psTempsensorBatt4Cell8 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Temperature battary 4 cell 8 in celcius"
+	::= { PsEntry 147 }
+psVoltageBatt4All OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Charge out voltage battary 4 "
+	::= { PsEntry 148 }
+psVoltageBatt4Cell1 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Cell 1 voltage battary 4  multiplied by 10"
+	::= { PsEntry 149 }
+psVoltageBatt4Cell2 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Cell 2 voltage battary 4 multiplied by 10"
+	::= { PsEntry 150 }
+psVoltageBatt4Cell3 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Cell 3 voltage battary 4  multiplied by 10"
+	::= { PsEntry 151 }
+psVoltageBatt4Cell4 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Cell 4 voltage battary 4  multiplied by 10"
+	::= { PsEntry 152 }
+psVoltageBatt4Cell5 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Cell 5 voltage battary 4 multiplied by 10"
+	::= { PsEntry 153 }
+psVoltageBatt4Cell6 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Cell 6 voltage battary 4 multiplied by 10"
+	::= { PsEntry 154 }
+psVoltageBatt4Cell7 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Cell 7 voltage battary 4 multiplied by 10"
+	::= { PsEntry 155 }
+psVoltageBatt4Cell8 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Cell 8 voltage battary 4 multiplied by 10"
+	::= { PsEntry 156 }
+psChargeAmpBattary4 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Charge current in amperes battary 4  multiplied by 10 "
+	::= { PsEntry 157  }
+psTimeOnBattary4 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"Time on battary in minutes "
+	::= { PsEntry 158  }
+psbattary4health1 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 1 battary 4  "
+	::= { PsEntry 159  }
+psbattary4health2 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 2 battary 4 "
+	::= { PsEntry 160  }
+psbattary4health3 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 3 battary 4 "
+	::= { PsEntry 161  }
+psbattary4health4 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 4 battary 4 "
+	::= { PsEntry 162  }
+psbattary4health5 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 5 battary 4 "
+	::= { PsEntry 163  }
+psbattary4health6 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 6 battary 4 "
+	::= { PsEntry 164  }
+psbattary4health7 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 7 battary 4 "
+	::= { PsEntry 165  }
+psbattary4health8 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 8 battary 4 "
+	::= { PsEntry 166  }
+psbattary4charge1 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 1 battary 4 "
+	::= { PsEntry 167  }
+psbattary4charge2 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 2 battary 4 "
+	::= { PsEntry 168  }
+psbattary4charge3 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 3 battary 4 "
+	::= { PsEntry 169  }
+psbattary4charge4 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 4 battary 4 "
+	::= { PsEntry 170  }
+psbattary4charge5 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 5 battary 4 "
+	::= { PsEntry 171  }
+psbattary4charge6 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 6 battary 4 "
+	::= { PsEntry 172 }
+psbattary4charge7 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 7 battary 4 "
+	::= { PsEntry 173 }
+psbattary4charge8 OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION
+		"State of health cell 8 battary 4 "
+	::= { PsEntry 174 }
+psIpServerSMTP OBJECT-TYPE
+    SYNTAX     OCTET STRING (SIZE(0..15))
+    MAX-ACCESS read-write
+    STATUS     current
+    DESCRIPTION
+        "IP address of SMTP server in dotted-decimal format (e.g., 192.168.1.100)"
+    ::= { PsEntry 175 }
+psCommand OBJECT-TYPE
+    SYNTAX     Integer32
+    MAX-ACCESS write-only
+    STATUS     current
+    DESCRIPTION
+        "Command register for power supply control.
+         Write values:
+         1 - save setting
+         "
+    ::= { PsEntry 176 }
+psMailFrom OBJECT-TYPE
+    SYNTAX     OCTET STRING (SIZE(0..31))
+    MAX-ACCESS read-write
+    STATUS     current
+    DESCRIPTION
+        "From address"
+    ::= { PsEntry 177 }
+psMailTo OBJECT-TYPE
+    SYNTAX     OCTET STRING (SIZE(0..31))
+    MAX-ACCESS read-write
+    STATUS     current
+    DESCRIPTION
+        "Recipient's email address"
+    ::= { PsEntry 178 }
+psPortSMTP OBJECT-TYPE
+    SYNTAX     Integer32
+    MAX-ACCESS read-write
+    STATUS     current
+    DESCRIPTION
+        "SMTP server port number."
+    ::= { PsEntry 179 }
+psIpServerSNMPTrap OBJECT-TYPE
+    SYNTAX     OCTET STRING (SIZE(0..15))
+    MAX-ACCESS read-write
+    STATUS     current
+    DESCRIPTION
+        "IP address of SNMP Trap server in dotted-decimal format (e.g., 192.168.1.100)"
+    ::= { PsEntry 180 }
+psPortSNMPTrap OBJECT-TYPE
+    SYNTAX     Integer32
+    MAX-ACCESS read-write
+    STATUS     current
+    DESCRIPTION
+        "SNMP Trap server port number."
+    ::= { PsEntry 181 }
+
+
+-- ============================================================
+-- NOTIFICATIONS (TRAPS)
+-- ============================================================
+
+psNotifications OBJECT IDENTIFIER ::= { psDev 0 }
+
+psStateChange NOTIFICATION-TYPE
+    OBJECTS { psState }
+    STATUS  current
+    DESCRIPTION
+        "This notification is sent when the UPS state changes."
+    ::= { psNotifications 1 }
+
+psErrorOccurred NOTIFICATION-TYPE
+    OBJECTS { psError1, psError2, psError3, psError4 }
+    STATUS  current
+    DESCRIPTION
+        "This notification is sent when any error condition is detected."
+    ::= { psNotifications 2 }
+
+psBatteryModuleError NOTIFICATION-TYPE
+    OBJECTS { psBattaryModuleState }
+    STATUS  current
+    DESCRIPTION
+        "This notification is sent when a battery module enters an error state."
+    ::= { psNotifications 3 }
+
+psOverheatWarning NOTIFICATION-TYPE
+    OBJECTS { psTempInside, psTempsensorKKM1, psTempsensorKKM2 }
+    STATUS  current
+    DESCRIPTION
+        "This notification is sent when temperature exceeds critical threshold."
+    ::= { psNotifications 4 }
+
+
+END
